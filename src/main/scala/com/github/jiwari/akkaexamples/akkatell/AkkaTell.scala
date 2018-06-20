@@ -1,4 +1,4 @@
-package com.github.jiwari.akka_examples.akkatell
+package com.github.jiwari.akkaexamples.akkatell
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 
@@ -7,7 +7,7 @@ import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
   */
 object AkkaTell extends App {
 
-  import com.github.jiwari.akka_examples.akkatell.Player._
+  import com.github.jiwari.akkaexamples.akkatell.Player._
 
   // Instantiate the actor system
   val system: ActorSystem = ActorSystem.create("actor-system")
@@ -30,7 +30,7 @@ object AkkaTell extends App {
 
 class Player extends Actor with ActorLogging {
 
-  import com.github.jiwari.akka_examples.akkatell.Player._
+  import com.github.jiwari.akkaexamples.akkatell.Player._
 
   /**
     * Every actor needs to define a PartialFunction on the 'receive' method
@@ -41,8 +41,10 @@ class Player extends Actor with ActorLogging {
   override def receive: Receive = {
     case Run =>
       log.info("Player is running!")
+      sender() ! "Run action done"
     case Rest =>
-      log.info("Player is rest...")
+      log.info("Player is resting...")
+      sender() ! "Rest action done"
   }
 }
 

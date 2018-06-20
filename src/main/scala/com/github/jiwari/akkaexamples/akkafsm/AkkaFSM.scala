@@ -1,7 +1,7 @@
-package com.github.jiwari.akka_examples.akkafsm
+package com.github.jiwari.akkaexamples.akkafsm
 
 import akka.actor.{ActorLogging, ActorRef, ActorSystem, FSM, Props}
-import com.github.jiwari.akka_examples.akkafsm.Bakery._
+import com.github.jiwari.akkaexamples.akkafsm.Bakery._
 
 object AkkaFSM extends App {
   val system: ActorSystem = ActorSystem.create("actor-system")

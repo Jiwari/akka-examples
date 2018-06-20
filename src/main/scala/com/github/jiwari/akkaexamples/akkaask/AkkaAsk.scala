@@ -1,9 +1,9 @@
-package com.github.jiwari.akka_examples.akkaask
+package com.github.jiwari.akkaexamples.akkaask
 
 import java.util.concurrent.TimeUnit
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
-import com.github.jiwari.akka_examples.akkaask.Suspect.Question
+import com.github.jiwari.akkaexamples.akkaask.Suspect.Question
 
 import scala.util.Random
 import akka.pattern.{ask, pipe}
@@ -33,7 +33,7 @@ object AkkaTellProps extends App {
 }
 
 class Suspect extends Actor with ActorLogging {
-  import com.github.jiwari.akka_examples.akkaask.Suspect._
+  import com.github.jiwari.akkaexamples.akkaask.Suspect._
 
   override def receive: Receive = {
     case Question => sender() ! Random.nextBoolean()

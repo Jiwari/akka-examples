@@ -1,10 +1,10 @@
-package com.github.jiwari.akka_examples.akkastate
+package com.github.jiwari.akkaexamples.akkastate
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 
 object AkkaState extends App {
 
-  import com.github.jiwari.akka_examples.akkastate.Bakery._
+  import com.github.jiwari.akkaexamples.akkastate.Bakery._
 
   val system = ActorSystem.create("actor-system")
   val bakery = system.actorOf(Props[Bakery])
@@ -33,7 +33,7 @@ object AkkaState extends App {
 
 class Bakery extends Actor with ActorLogging {
 
-  import com.github.jiwari.akka_examples.akkastate.Bakery._
+  import com.github.jiwari.akkaexamples.akkastate.Bakery._
 
   override def receive: Receive = closed
 

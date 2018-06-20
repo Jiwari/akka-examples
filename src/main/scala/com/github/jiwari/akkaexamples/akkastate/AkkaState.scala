@@ -39,7 +39,7 @@ class Bakery extends Actor with ActorLogging {
 
   def open: Receive = {
     case Sell(item) =>
-      log.info(s"Seling some $item!")
+      log.info(s"Selling some $item!")
     case Make(item) =>
       log.info(s"Producing some $item!")
     case Close =>

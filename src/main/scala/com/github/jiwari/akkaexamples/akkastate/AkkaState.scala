@@ -23,7 +23,7 @@ object AkkaState extends App {
   bakery ! Sell(Donuts)
 
   // Changes the state to Close
-  bakery ! Close
+  bakery ! Closed
 
   // Tries to send task
   bakery ! Sell(Cookies)
@@ -40,27 +40,38 @@ class Bakery extends Actor with ActorLogging {
   def open: Receive = {
     case Sell(item) =>
       log.info(s"Selling some $item!")
+      sender ! s"Selling some $item!"
     case Make(item) =>
       log.info(s"Producing some $item!")
-    case Close =>
+      sender ! s"Producing some $item!"
+    case Closed =>
       log.info("Bakery is closing its business for the day")
+      sender ! "Bakery is closing its business for the day"
       context.become(closed)
+    case AskState =>
+      sender ! Open
   }
 
   def closed: Receive = {
     case Open =>
       log.info("Opening the Bakery back again!")
+      sender ! "Opening the Bakery back again!"
       context.become(open)
-    case _ =>
+    case _: Task =>
+      sender ! "The bakery is closed, no tasks will be executed"
       log.info("The bakery is closed, no tasks will be executed")
+    case AskState =>
+      sender ! Closed
+
   }
 }
 
 object Bakery {
+  case object AskState
 
   sealed trait State
-  case object Open
-  case object Close
+  case object Open extends State
+  case object Closed extends State
 
   sealed trait Task
   sealed case class Make(item: Item) extends Task
@@ -71,6 +82,5 @@ object Bakery {
   case object Bread extends Item
   case object Cookies extends Item
   case object Donuts extends Item
-
 }
 

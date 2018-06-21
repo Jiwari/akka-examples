@@ -23,7 +23,7 @@ class AkkaAskSpec(_system: ActorSystem) extends TestKit(_system)
 
   override protected def afterAll(): Unit = shutdown(system)
 
-  "AkkaAsk" should {
+  "Suspect" should {
     "be able to receive answers with 'ask' method" in {
       val suspect = TestActorRef[Suspect]
 

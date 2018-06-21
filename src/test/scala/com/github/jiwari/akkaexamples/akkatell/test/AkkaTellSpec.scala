@@ -19,7 +19,7 @@ class AkkaTellSpec(_system: ActorSystem) extends TestKit(_system)
 
   override protected def afterAll(): Unit = shutdown(system)
 
-  "AkkaTellSpec" should {
+  "Player" should {
     "reply when the run action is done" in {
       val player = TestActorRef[Player]
 

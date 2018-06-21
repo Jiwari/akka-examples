@@ -16,7 +16,7 @@ class AkkaStateSpec(_system: ActorSystem) extends TestKit(_system: ActorSystem)
 
   override protected def afterAll(): Unit = shutdown(system)
 
-  "Bakery" should {
+  "StateMachine Bakery" should {
     "start in closed state" in {
       val bakery = TestActorRef[Bakery]
 

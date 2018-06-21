@@ -15,7 +15,7 @@ class AkkaFSMSpec(_system: ActorSystem) extends TestKit(_system)
 
   override protected def afterAll(): Unit = shutdown(system)
 
-  "Bakery FSM" should {
+  "FSM Bakery" should {
     "start on Closed state and Empty data" in {
       val (actor, _) = bakeryTestActor
 

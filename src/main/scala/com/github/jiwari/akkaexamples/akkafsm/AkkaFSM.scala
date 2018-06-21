@@ -12,7 +12,7 @@ object AkkaFSM extends App {
   bakery ! Produce(Bread -> 5)
 
   // Changes State
-  bakery ! Start
+  bakery ! OpenBusiness
 
   // Produce
   bakery ! Produce(Cake -> 1)
@@ -24,7 +24,7 @@ object AkkaFSM extends App {
   bakery ! Sell(Cookies -> 3)
   bakery ! Produce(Cookies -> 7)
 
-  bakery ! End
+  bakery ! CloseBusiness
 
   Thread.sleep(500)
 
@@ -36,12 +36,13 @@ class Bakery extends FSM[Status, Data] with ActorLogging {
   startWith(Close, Empty)
 
   when(Close) {
-    case Event(Start, _) =>
+    case Event(OpenBusiness, _) =>
+      log.info("Opening bakery")
       goto(Open) using Empty
   }
 
   when(Open) {
-    case Event(End, data) =>
+    case Event(CloseBusiness, data) =>
       goto(Close) using data
     case Event(Produce(item), Empty) =>
       produceItem(item, Storage(Map.empty))
@@ -64,9 +65,10 @@ class Bakery extends FSM[Status, Data] with ActorLogging {
     val availableItems: Integer = items.items.getOrElse(name, 0)
     if (availableItems == 0) {
       log.info(s"There are no $name items available to sell. Nothing sold.")
+      sender ! s"We are out of $name. Sorry for the inconvenience"
       stay using items
     } else if (qtd > availableItems) {
-      log.info(s"There are not enough $name items available to sell. Selling everything.")
+      log.info(s"There are not enough $name items available to sell. Selling all the $qtd available.")
       stay using Storage(items.items + (name -> 0))
     } else {
       val newAmount = availableItems - qtd
@@ -98,7 +100,6 @@ class Bakery extends FSM[Status, Data] with ActorLogging {
   initialize()
 }
 
-
 object Bakery {
   sealed trait Status
   case object Open extends Status
@@ -107,8 +108,8 @@ object Bakery {
   type ItemAction = (Goods, Integer)
 
   sealed trait Action
-  case object End extends Action
-  case object Start extends Action
+  case object CloseBusiness extends Action
+  case object OpenBusiness extends Action
   sealed case class Produce(item: ItemAction) extends Action
   sealed case class Sell(item: ItemAction) extends Action
 

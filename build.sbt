@@ -32,7 +32,8 @@ lazy val akkaFSM = Project("akka-fsm", file("akka-fsm"))
 lazy val akkaPersistence = Project("akka-persistence", file("akka-persistence"))
   .settings(
     name := "akka-persistence",
-    libraryDependencies := commonDependencies ++ persistenceDependencies
+    libraryDependencies := commonDependencies ++ persistenceDependencies,
+    resolvers += Resolver.jcenterRepo
   )
 
 lazy val akkaState = Project("akka-state", file("akka-state"))
@@ -54,7 +55,6 @@ lazy val commonDependencies = Seq(
 )
 
 lazy val persistenceDependencies = Seq(
-  "com.typesafe.akka"         %%  "akka-persistence"  % "2.5.13",
-  "org.iq80.leveldb"          %   "leveldb"           % "0.7",
-  "org.fusesource.leveldbjni" %   "leveldbjni-all"    % "1.8"
+  "com.typesafe.akka"         %%  "akka-persistence"          % "2.5.13",
+  "com.github.dnvriend"       %% "akka-persistence-inmemory"  % "2.5.1.1"
 )

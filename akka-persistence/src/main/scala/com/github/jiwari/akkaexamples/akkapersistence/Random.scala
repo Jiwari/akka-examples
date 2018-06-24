@@ -13,7 +13,7 @@ object Random {
   }
 
   def quantity: Integer = {
-    sRandom.nextInt(10)
+    sRandom.nextInt(10) + 1
   }
 
   def itemAction: ItemAction ={

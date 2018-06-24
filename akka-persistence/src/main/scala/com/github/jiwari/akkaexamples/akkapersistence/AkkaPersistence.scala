@@ -79,12 +79,12 @@ class Bakery(id: String) extends PersistentActor with ActorLogging {
       val message = s"We are out of $name. Sorry for the inconvenience"
       (storage, SellReply(message))
     } else if (qtd > availableItems) {
-      val message = s"There are not enough $name items available to sell. Selling all the $qtd available."
+      val message = s"There are not enough $name items available to sell. Selling all the $availableItems available."
       log.info(message)
       (Storage(storage.items + (name -> 0)), SellReply(message))
     } else {
       val newAmount = availableItems - qtd
-      val message = s"Selling $qtd $name items. There are $newAmount of $name items still available"
+      val message = s"Selling $qtd $name items."
       log.info(message)
       (Storage(storage.items + (name -> newAmount)), SellReply(message))
     }

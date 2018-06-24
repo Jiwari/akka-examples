@@ -8,8 +8,8 @@ object AkkaPersistence extends App {
   val system = ActorSystem("actor-system")
   val bakery: ActorRef = system.actorOf(Props[Bakery])
 
-  bakery ! Make(Bread -> 5)
-  bakery ! Sell(Bread -> 3)
+  bakery ! Make(Random.good -> Random.quantity)
+  bakery ! Sell(Random.good -> Random.quantity)
 
   Thread.sleep(1000)
 
@@ -25,7 +25,7 @@ class Bakery extends PersistentActor with ActorLogging {
       log.info("Action on ReceiveCommand")
       log.info("Storage: " + storage.toString)
       persist(action) { act =>
-        storage = executeAction(act)
+        executeAction(act)
       }
     case _ => log.info("Something else on ReceiveCommand")
   }
@@ -41,8 +41,8 @@ class Bakery extends PersistentActor with ActorLogging {
 
   override def persistenceId: String = "bakery-cache"
 
-  def executeAction(action: Action): Bakery.Storage = {
-    action match {
+  def executeAction(action: Action): Unit = {
+    storage = action match {
       case Sell(item) =>
         sellItem(item)
       case Make(item) =>
@@ -78,17 +78,12 @@ object Bakery {
   type ItemAction = (Goods, Integer)
 
   sealed trait Goods
-
   case object Bread extends Goods
-
   case object Cookies extends Goods
-
   case object Cake extends Goods
 
   sealed trait Action
-
   sealed case class Sell(action: ItemAction) extends Action
-
   sealed case class Make(action: ItemAction) extends Action
 
   sealed case class Storage(items: Map[Goods, Integer] = Map()) {
@@ -102,5 +97,4 @@ object Bakery {
       }
     }
   }
-
 }

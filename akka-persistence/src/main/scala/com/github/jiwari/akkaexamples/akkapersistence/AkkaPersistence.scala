@@ -84,7 +84,7 @@ class Bakery(id: String) extends PersistentActor with ActorLogging {
       (Storage(storage.items + (name -> 0)), SellReply(message))
     } else {
       val newAmount = availableItems - qtd
-      val message = s"Selling $qtd $name items. There are $newAmount of $name items still available"
+      val message = s"Selling $qtd $name items."
       log.info(message)
       (Storage(storage.items + (name -> newAmount)), SellReply(message))
     }

@@ -45,7 +45,7 @@ class AkkaPersistenceSpec(_system: ActorSystem) extends TestKit(_system)
       )
     }
     "sell all items when the requested item number is higher than the available amount" in {
-      val bakeryId = "bakery-002"
+      val bakeryId = "bakery-003"
       val bakery = system.actorOf(Bakery.props(bakeryId))
       val item = Random.good
 
@@ -60,7 +60,7 @@ class AkkaPersistenceSpec(_system: ActorSystem) extends TestKit(_system)
       )
     }
     "allow to Make items and restore them" in {
-      val bakeryId = "bakery-003"
+      val bakeryId = "bakery-004"
       val bakery = system.actorOf(Bakery.props(bakeryId))
       val (item, qtd) = Random.itemAction
 

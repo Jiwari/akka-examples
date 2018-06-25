@@ -50,6 +50,8 @@ class Bakery(id: String) extends PersistentActor with ActorLogging {
         sellItem(item)
       case Make(item) =>
         makeItem(item)
+      case LookupStorage =>
+        (storage, ReplyMessage("Lookup storage"))
     }
 
     storage = updatedStorage

@@ -68,7 +68,7 @@ class Bakery extends FSM[Status, Data] with ActorLogging {
       sender ! s"We are out of $name. Sorry for the inconvenience"
       stay using items
     } else if (qtd > availableItems) {
-      log.info(s"There are not enough $name items available to sell. Selling all the $qtd available.")
+      log.info(s"There are not enough $name items available to sell. Selling all the $availableItems available.")
       stay using Storage(items.items + (name -> 0))
     } else {
       val newAmount = availableItems - qtd

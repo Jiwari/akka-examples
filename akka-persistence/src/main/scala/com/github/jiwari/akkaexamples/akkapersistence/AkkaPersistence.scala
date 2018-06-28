@@ -1,7 +1,7 @@
 package com.github.jiwari.akkaexamples.akkapersistence
 
 import akka.actor.{ActorLogging, ActorRef, ActorSystem, Props}
-import akka.persistence.{PersistentActor, SnapshotOffer}
+import akka.persistence.{PersistentActor, SaveSnapshotFailure, SaveSnapshotSuccess, SnapshotOffer}
 import com.github.jiwari.akkaexamples.akkapersistence.Bakery._
 
 object AkkaPersistence extends App {
@@ -32,6 +32,10 @@ class Bakery(id: String) extends PersistentActor with ActorLogging {
       persist(action) { act =>
         executeAction(act)
       }
+    case SaveSnapshotSuccess =>
+      log.info("Bakery snapshot saved successfully")
+    case SaveSnapshotFailure =>
+      log.info("Bakery snapshot failed to be saved")
     case _ => log.info("Something else on ReceiveCommand")
   }
 
@@ -42,6 +46,12 @@ class Bakery(id: String) extends PersistentActor with ActorLogging {
     case SnapshotOffer(_, snapshot: Storage) =>
       log.info(s"Creating snapshot of data: $storage")
       storage = snapshot
+  }
+
+  // Example of how to force to take a snapshot by calling saveSnapshot method
+  private def takeSnapshot = {
+    // Some logic and then force the:
+    saveSnapshot(storage)
   }
 
   def executeAction(action: Action): Unit = {

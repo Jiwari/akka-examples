@@ -36,6 +36,13 @@ lazy val akkaPersistence = Project("akka-persistence", file("akka-persistence"))
     resolvers += Resolver.jcenterRepo
   )
 
+lazy val akkaPersistentFSM = Project("akka-persistent-fsm", file("akka-persistent-fsm"))
+  .settings(
+    name := "akka-persistent-fsm",
+    libraryDependencies := commonDependencies ++ persistenceDependencies,
+    resolvers += Resolver.jcenterRepo
+  )
+
 lazy val akkaState = Project("akka-state", file("akka-state"))
   .settings(
     name := "akka-state",
